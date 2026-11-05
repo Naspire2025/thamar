@@ -1,0 +1,9 @@
+{
+  "name": "thamar",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "pages": "node scripts/pages.mjs",
+    "serve": "node scripts/serve.mjs"
+  }
+}

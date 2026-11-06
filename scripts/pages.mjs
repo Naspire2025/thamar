@@ -173,7 +173,7 @@ function summary(page, lang, faq) {
     page.type === "FAQPage"
       ? faq.map(([q, a]) => `<details class="faq"><summary><b>${esc(q[i])}</b></summary><p class="small muted">${esc(a[i])}</p></details>`).join("")
       : "";
-  return `<div id="pub"><main class="pmain" id="main"><section class="lsec pin stack">
+  return `<div id="pub" data-static><main class="pmain" id="main"><section class="lsec pin stack">
 <span class="eyebrow">${esc(SITE.name[lang])} · ${esc(SITE.tagline[lang])}</span>
 <h1>${esc(page.title[lang].split(" — ")[page.route === "home" ? 1 : 0] || page.title[lang])}</h1>
 <p>${esc(page.description[lang])}</p>${faqHtml}
@@ -236,7 +236,7 @@ async function main() {
         `<meta name="robots" content="noindex,follow">`,
         ...common("ar", absBase),
       ].join("\n"),
-      `<div id="pub"><main class="pmain" id="main"><section class="lsec pin stack">
+      `<div id="pub" data-static><main class="pmain" id="main"><section class="lsec pin stack">
 <span class="eyebrow">404</span><h1>الصفحة غير موجودة</h1><p lang="en" dir="ltr">Page not found</p>
 <p><a href="${absBase}">الصفحة الرئيسية</a> · <a href="${absBase}en/" lang="en">Home (English)</a></p>
 </section></main></div>`,

@@ -185,3 +185,6 @@ img{max-width:100%}
 .skip{position:absolute;inset-inline-start:12px;top:-60px;z-index:100;background:var(--brand);color:var(--brand-ink);padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none;transition:top .15s}
 .skip:focus{top:12px}
 .noscript{margin:16px;padding:14px 16px;border-radius:var(--r);background:var(--warn-soft);color:var(--warn);font-family:var(--f-body)}
+/* The static page summary (for crawlers and no-JS visitors) stays hidden while app.js draws the full page,
+   so it doesn't flash. If the app fails to load, the inline timer reveals it after 3s. */
+.js:not(.js-late) #pub[data-static]{visibility:hidden}

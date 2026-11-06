@@ -562,7 +562,7 @@ ${CITIES.map(c=>`<tr><td><b>${L(c.n)}</b> <span class="tiny muted">${L(c.c)}</sp
 /* ---------------- router & events ---------------- */
 function render(){applyCity();const hh=location.hash.slice(1);const h=hh&&!hh.startsWith("lp-")?hh:PATH.route;const m=h.match(/^(challenge|workspace)-(\w+)$/);let route=m?m[1]:h;document.documentElement.lang=S.lang;document.documentElement.dir=S.lang==="ar"?"rtl":"ltr";const pub=document.getElementById("pub"),app=document.getElementById("app");
  if(!V[route])route="home";
- if(PUBLIC.includes(route)){app.hidden=true;pub.hidden=false;pub.innerHTML=pubHeader(route)+`<main class="pmain" id="main">`+LOC(V[route]())+`</main>`+pubFooter();realLinks(pub);}
+ if(PUBLIC.includes(route)){app.hidden=true;pub.hidden=false;pub.removeAttribute("data-static");pub.innerHTML=pubHeader(route)+`<main class="pmain" id="main">`+LOC(V[route]())+`</main>`+pubFooter();realLinks(pub);}
  else{if(!S.user){S.after=h;location.hash="#login";return}pub.hidden=true;app.hidden=false;shell(route);document.getElementById("view").innerHTML=LOC(can(route)?V[route](m&&m[2]):denied(route));document.getElementById("side").classList.remove("open")}
  setTitle(route);bindForms();if(S.scrollTo){const el=document.getElementById(S.scrollTo);S.scrollTo=null;S.noTop=true;if(el)setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),40)}}
 /* Point public-page links at their real URLs (crawlable internal links); app links keep their hash routes. */

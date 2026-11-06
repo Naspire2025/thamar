@@ -33,6 +33,9 @@ Edit `app.js` or `app.css` directly for app changes. Edit `site.config.mjs` for 
 
 ## Deploying
 
-- **GitHub Pages:** Settings → Pages → *Deploy from a branch* → `main` / `(root)`.
-- **Custom domain:** set `SITE_URL` in `site.config.mjs` (or `SITE_URL=https://example.org/ npm run pages`), regenerate, and commit, so the canonical, OG and sitemap URLs point at the real domain.
-- After launch, submit `sitemap.xml` in Google Search Console and Bing Webmaster Tools.
+Live at **https://www.thamar.world/**, hosted on Vercel. Each push to `main` deploys automatically, and there is no build step: the committed files are served as-is.
+
+- `vercel.json` adds trailing slashes (`/about` → `/about/`, so each page has one URL), caching for `assets/`, and basic security headers.
+- `.vercelignore` keeps the generator scripts out of the deployment.
+- If the domain changes, update `SITE_URL` in `site.config.mjs`, run `npm run pages`, and push, so the canonical, Open Graph and sitemap URLs follow.
+- Submit `https://www.thamar.world/sitemap.xml` in Google Search Console and Bing Webmaster Tools.

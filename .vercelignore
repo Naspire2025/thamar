@@ -1,0 +1,5 @@
+scripts/
+site.config.mjs
+package.json
+README.md
+.claude/

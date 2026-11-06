@@ -1,6 +1,6 @@
 // Site-wide settings for the build. Change SITE_URL when the production domain is known:
 // every canonical, hreflang, Open Graph and sitemap URL is derived from it.
-export const SITE_URL = process.env.SITE_URL || "https://naspire2025.github.io/thamar/";
+export const SITE_URL = process.env.SITE_URL || "https://www.thamar.world/";
 
 export const SITE = {
   name: { ar: "ثَمَر", en: "THAMAR" },

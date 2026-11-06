@@ -6,6 +6,8 @@ export const SITE = {
   name: { ar: "ثَمَر", en: "THAMAR" },
   tagline: { ar: "من تحديات المدينة إلى ثمار مشتركة", en: "From city challenges to shared prosperity" },
   themeColor: "#0B4F4A",
+  themeColorDark: "#0B1514",
+  publisher: { ar: "سنديان للريادة والتطوير", en: "Sindyan for Entrepreneurship & Development" },
   locale: { ar: "ar_JO", en: "en_US" },
   twitter: "", // e.g. "@thamar_city" — leave empty until an account exists
 };
@@ -18,7 +20,7 @@ export const PAGES = [
     type: "WebPage",
     title: {
       ar: "ثَمَر — منصة تحويل تحديات المدن إلى أبحاث ومشاريع ووظائف",
-      en: "THAMAR — City challenges into research, ventures and jobs",
+      en: "THAMAR — Turning city challenges into ventures and jobs",
     },
     description: {
       ar: "منصة تشاركية من البنك الإسلامي للتنمية وسنديان تجمع البلدية والجامعة والقطاع الخاص والمجتمع لتحويل تحديات المدينة إلى أبحاث وشركات ناشئة ووظائف.",

@@ -67,12 +67,7 @@ function head(page, lang, faq) {
     `<meta name="robots" content="index,follow,max-image-preview:large">`,
     ...LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${pageUrl(page.route, l)}">`),
     `<link rel="alternate" hreflang="x-default" href="${pageUrl(page.route, "ar")}">`,
-    `<meta name="theme-color" content="${SITE.themeColor}">`,
-    `<meta name="application-name" content="${esc(SITE.name[lang])}">`,
-    `<link rel="icon" href="${base}assets/favicon-32.png" sizes="32x32" type="image/png">`,
-    `<link rel="icon" href="${base}assets/icon-192.png" sizes="192x192" type="image/png">`,
-    `<link rel="apple-touch-icon" href="${base}assets/apple-touch-icon.png">`,
-    `<link rel="manifest" href="${base}site.webmanifest">`,
+    ...common(lang, base),
     `<meta property="og:type" content="website">`,
     `<meta property="og:site_name" content="${esc(SITE.name[lang])}">`,
     `<meta property="og:title" content="${esc(title)}">`,
@@ -93,6 +88,23 @@ function head(page, lang, faq) {
     ...(SITE.twitter ? [`<meta name="twitter:site" content="${SITE.twitter}">`] : []),
     jsonld(structuredData(page, lang, faq)),
   ].join("\n");
+}
+
+// Tags shared by every page, the 404 included: identity, icons, colours and mobile behaviour.
+function common(lang, base) {
+  return [
+    `<meta name="author" content="${esc(SITE.publisher[lang])}">`,
+    `<meta name="application-name" content="${esc(SITE.name[lang])}">`,
+    `<meta name="apple-mobile-web-app-title" content="${esc(SITE.name[lang])}">`,
+    `<meta name="color-scheme" content="light dark">`,
+    `<meta name="theme-color" content="${SITE.themeColor}" media="(prefers-color-scheme: light)">`,
+    `<meta name="theme-color" content="${SITE.themeColorDark}" media="(prefers-color-scheme: dark)">`,
+    `<meta name="format-detection" content="telephone=no">`,
+    `<link rel="icon" href="${base}assets/favicon-32.png" sizes="32x32" type="image/png">`,
+    `<link rel="icon" href="${base}assets/icon-192.png" sizes="192x192" type="image/png">`,
+    `<link rel="apple-touch-icon" href="${base}assets/apple-touch-icon.png">`,
+    `<link rel="manifest" href="${base}site.webmanifest">`,
+  ];
 }
 
 // ---------------------------------------------------------------- JSON-LD
@@ -177,6 +189,9 @@ async function main() {
     ["scripts/page.html", "app.css", "app.js"].map((f) => readFile(path.join(ROOT, f), "utf8")),
   );
   const faq = await loadFaq(js);
+  // The home page's title and description, so the app can restore them when it shows home on another URL.
+  const home = PAGES.find((p) => p.route === "home");
+  const HOME = { ar: [home.title.ar, home.description.ar], en: [home.title.en, home.description.en] };
   const VER = createHash("sha256").update(css + js).digest("hex").slice(0, 10);
   const write = async (rel, content) => {
     await mkdir(path.dirname(path.join(ROOT, rel)), { recursive: true });
@@ -200,24 +215,32 @@ async function main() {
       const base = baseFor(page.route, lang);
       await write(
         pagePath(page.route, lang) + "index.html",
-        render(lang, base, head(page, lang, faq), summary(page, lang, faq), { base, route: page.route, lang }),
+        render(lang, base, head(page, lang, faq), summary(page, lang, faq), { base, route: page.route, lang, home: HOME }),
       );
     }
 
-  // 404: GitHub Pages serves it from any depth, so it uses absolute asset paths. Not indexed.
+  // 404: the host serves it for any unknown path at any depth, so it uses absolute asset paths. Not indexed.
   const absBase = site.pathname;
+  const nf = {
+    title: "الصفحة غير موجودة — ثَمَر · Page not found — THAMAR",
+    desc: "لم نجد هذه الصفحة. ابدأ من الصفحة الرئيسية لمنصة ثَمَر. · This page doesn't exist; start from the THAMAR home page.",
+  };
   await write(
     "404.html",
     render(
       "ar",
       absBase,
       [
-        `<title>${esc(SITE.name.ar)} — الصفحة غير موجودة</title>`,
-        `<meta name="robots" content="noindex">`,
-        `<link rel="icon" href="${absBase}assets/favicon-32.png" type="image/png">`,
+        `<title>${esc(nf.title)}</title>`,
+        `<meta name="description" content="${esc(nf.desc)}">`,
+        `<meta name="robots" content="noindex,follow">`,
+        ...common("ar", absBase),
       ].join("\n"),
-      `<div id="pub" hidden></div>`,
-      { base: absBase },
+      `<div id="pub"><main class="pmain" id="main"><section class="lsec pin stack">
+<span class="eyebrow">404</span><h1>الصفحة غير موجودة</h1><p lang="en" dir="ltr">Page not found</p>
+<p><a href="${absBase}">الصفحة الرئيسية</a> · <a href="${absBase}en/" lang="en">Home (English)</a></p>
+</section></main></div>`,
+      { base: absBase, notFound: true, home: HOME },
     ),
   );
 
